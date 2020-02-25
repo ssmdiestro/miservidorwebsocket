@@ -27,13 +27,15 @@ CONFIG += c++11
 SOURCES += \
         main.cpp \
         mainwindow.cpp \
-    usuarios.cpp
+    usuarios.cpp \
+    registro.cpp
 
 HEADERS += \
         mainwindow.h \
     ../../json/include/nlohmann/json.hpp \
     usuarios.h \
-    json.hpp
+    json.hpp \
+    registro.h
 
 FORMS += \
         mainwindow.ui

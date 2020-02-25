@@ -4,6 +4,7 @@
 #include "ixwebsocket/IXConnectionState.h"
 #include "json.hpp"
 #include "usuarios.h"
+#include "registro.h"
 #include <QSqlDatabase>
 #include <QObject>
 #include <QDebug>
@@ -98,7 +99,7 @@ int main(int argc, char *argv[])
                     if (msg->type == ix::WebSocketMessageType::Open)
                     {
                         std::cout << "New connection" << std::endl;
-                        Usuarios::modificarUsuario(12345,"Sam","Lopez",0);
+                        Registro::entrar(123);
                     }
                     else if (msg->type == ix::WebSocketMessageType::Close)
                     {
