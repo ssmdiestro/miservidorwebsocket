@@ -99,7 +99,7 @@ int main(int argc, char *argv[])
                     if (msg->type == ix::WebSocketMessageType::Open)
                     {
                         std::cout << "New connection" << std::endl;
-                        Registro::entrar(123);
+                        Registro::salir(123);
                     }
                     else if (msg->type == ix::WebSocketMessageType::Close)
                     {
