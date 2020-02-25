@@ -98,8 +98,8 @@ int main(int argc, char *argv[])
                     if (msg->type == ix::WebSocketMessageType::Open)
                     {
                         std::cout << "New connection" << std::endl;
-                        Usuarios u(1234,"Sam","Serrano",1);
-                        u.crearUsuario();
+                        //Usuarios u(1234,"Sam","Serrano",1);
+                       Usuarios::eliminarUsuario(1234);
 
                     }
                     else if (msg->type == ix::WebSocketMessageType::Close)

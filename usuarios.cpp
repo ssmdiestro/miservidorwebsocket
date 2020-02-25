@@ -29,8 +29,11 @@ void Usuarios::crearUsuario()
 
 }
 
-void Usuarios::eliminarUsuario()
+void Usuarios::eliminarUsuario(int id)
 {
-
+    QSqlQuery query;
+    query.prepare("DELETE from usuarios where numid=:numid");
+    query.bindValue(":numid", id);
+    query.exec();
 }
 

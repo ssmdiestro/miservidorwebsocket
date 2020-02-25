@@ -11,6 +11,7 @@ public:
     //Metodos
     Usuarios(int usuarioId,QString nombre,QString apellidos,int admin);
     void crearUsuario();
+    static void eliminarUsuario(int id);
     //json toJSON();
 private:
     int m_usuarioId;
