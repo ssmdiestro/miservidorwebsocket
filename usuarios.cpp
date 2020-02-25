@@ -37,3 +37,15 @@ void Usuarios::eliminarUsuario(int id)
     query.exec();
 }
 
+
+void Usuarios::modificarUsuario(int id,QString nombre,QString apellidos,int admin)
+{
+    QSqlQuery query;
+    query.prepare("UPDATE usuarios SET nombre = :nombre,apellidos = :apellidos,admin = :admin WHERE numid=:numid");
+    query.bindValue(":numid", id);
+    query.bindValue(":nombre", nombre);
+    query.bindValue(":apellidos", apellidos);
+    query.bindValue(":admin", admin);
+    query.exec();
+
+}
