@@ -13,6 +13,8 @@ public:
     void crearUsuario();
     static void eliminarUsuario(int id);
     static void modificarUsuario(int id,QString nombre,QString apellidos,int admin);
+    static bool esAdmin(int id);
+    static bool existe(int id);
     //json toJSON();
 private:
     int m_usuarioId;

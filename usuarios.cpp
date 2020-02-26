@@ -49,3 +49,30 @@ void Usuarios::modificarUsuario(int id,QString nombre,QString apellidos,int admi
     query.exec();
 
 }
+bool Usuarios::existe(int id)
+{
+    bool result =false;
+    QSqlQuery query;
+    query.prepare("SELECT numid from usuarios where numid = :numid");
+    query.bindValue(":numid", id);
+
+    if (query.exec()){
+        if (query.size()>0) result =true;
+    }
+    return result;
+}
+bool Usuarios::esAdmin(int id)
+{
+    QSqlQuery query;
+    query.prepare("SELECT admin from usuarios where numid = :numid");
+    query.bindValue(":numid", id);
+    query.exec();
+    query.next();
+    int adminCode = query.value("admin").toInt();
+    if (adminCode==1){
+        return true;
+    }else{
+        return false;
+    }
+
+}
