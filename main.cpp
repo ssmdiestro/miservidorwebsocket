@@ -9,63 +9,11 @@
 #include <QObject>
 #include <QDebug>
 #include <QSqlError>
+#include "server.h"
 
-using JSON = nlohmann::json;
-
-int g_idMensaje=0;
-
-int dameIdMensaje(){
-    g_idMensaje++;
-    return g_idMensaje;
-}
-bool exists(const JSON& json, const std::string& key)
-{
-    return json.find(key)!=json.end();
-}
-
-JSON registro(JSON receivedObject)
-{
-    if(receivedObject.is_discarded())
-    {
-        std::cout << "Error" << std::endl;
-    }else
-    {
-        JSON respuesta;
-        static bool estaDentro {false};
-
-        respuesta["idServidor"]=dameIdMensaje();
-        respuesta["idCliente"]=receivedObject["id"];
-        respuesta["hayError"]=false;
-
-        if(exists(receivedObject,"idTarjeta")){
-            if(receivedObject["idTarjeta"]!="12345"){
-                respuesta["hayError"]=true;
-                respuesta["mensaje"]="Tarjeta no valida";
-            }else{
-               std::string nombre="Samuel";
-               respuesta["nombre"]=nombre;
-                if (estaDentro)
-                {
-                    respuesta["mensaje"]="Hasta otra "+nombre;
-                    estaDentro=false;
-                }else{
-                    respuesta["mensaje"]="Bienvenido "+nombre;
-                    estaDentro=true;
-
-                }
-
-            }
-             return respuesta;
-        }
-    }
-
-
-
-}
 
 int main(int argc, char *argv[])
 {
-
     //Conexion con la base de datos
     QSqlDatabase db;
     db =(QSqlDatabase::addDatabase("QPSQL"));
@@ -84,67 +32,9 @@ int main(int argc, char *argv[])
     }else{
         std::cout << "Biien" << std::endl;
     }
-
-
-    ix::WebSocketServer server(9990, "0.0.0.0");
-    server.setOnConnectionCallback(
-        [&server](std::shared_ptr<ix::WebSocket> webSocket,
-                  std::shared_ptr<ix::ConnectionState> connectionState)
-        {
-            webSocket->setOnMessageCallback(
-                [webSocket, connectionState, &server](const ix::WebSocketMessagePtr msg)
-                {
-
-
-                    if (msg->type == ix::WebSocketMessageType::Open)
-                    {
-                        std::cout << "New connection" << std::endl;
-                        int userid=123;
-                       int id=Registro::estaDentro(userid);
-                        if (id!=0){
-                                Registro::salir(id);
-                        }else{
-                            Registro::entrar(userid);
-                        };
-
-                    }
-                    else if (msg->type == ix::WebSocketMessageType::Close)
-                    {
-                        std::cout << "Bye bye connection" << std::endl;
-                    }
-                    else if (msg->type == ix::WebSocketMessageType::Message)
-                    {
-                        if (!msg->binary)
-                        {
-                            /// Text format
-                          std::cout << "Received message: " << msg->str << std::endl;
-                        }
-                        auto receiveObject =JSON::parse(msg->str);
-
-                        auto respuesta=registro(receiveObject).dump();
-
-                        webSocket->send(respuesta);
-                         std::cout << "Message Sent: " <<respuesta<< std::endl;
-
-                    }
-                }
-            );
-        }
-    );
-
-
-
-    auto res = server.listen();
-    if (!res.first)
-    {
-        // Error handling
-        return 1;
-    }
-
-    server.start();
-    server.wait();
-    server.stop();
-
+    Server servidor;
+    //Inicializacion del servidor
+    servidor.iniciarServer();
 
 
 }

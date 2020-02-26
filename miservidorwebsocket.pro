@@ -28,14 +28,16 @@ SOURCES += \
         main.cpp \
         mainwindow.cpp \
     usuarios.cpp \
-    registro.cpp
+    registro.cpp \
+    server.cpp
 
 HEADERS += \
         mainwindow.h \
     ../../json/include/nlohmann/json.hpp \
     usuarios.h \
     json.hpp \
-    registro.h
+    registro.h \
+    server.h
 
 FORMS += \
         mainwindow.ui
