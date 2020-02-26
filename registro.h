@@ -8,7 +8,8 @@ class Registro
 public:
     Registro();
     static void entrar(int userid);
-    static void salir(int userid);
+    static void salir(int id);
+    static int estaDentro(int userid);
 };
 
 #endif // REGISTRO_H

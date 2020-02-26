@@ -99,9 +99,13 @@ int main(int argc, char *argv[])
                     if (msg->type == ix::WebSocketMessageType::Open)
                     {
                         std::cout << "New connection" << std::endl;
-
-                        qDebug() << Usuarios::existe(123);
-                        qDebug() << Usuarios::existe(12341231);
+                        int userid=123;
+                       int id=Registro::estaDentro(userid);
+                        if (id!=0){
+                                Registro::salir(id);
+                        }else{
+                            Registro::entrar(userid);
+                        };
 
                     }
                     else if (msg->type == ix::WebSocketMessageType::Close)
