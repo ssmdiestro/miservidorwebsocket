@@ -6,7 +6,9 @@
 #include <string>
 #include <QVariant>
 #include <QString>
+#include "json.hpp"
 
+using JSON = nlohmann::json;
 
 Usuarios::Usuarios(int usuarioId,QString nombre,QString apellidos,int admin)
 {
@@ -74,5 +76,22 @@ bool Usuarios::esAdmin(int id)
     }else{
         return false;
     }
+
+}
+JSON Usuarios::listar(JSON respuesta){
+    QSqlQuery query;
+    query.prepare("select * from usuarios");
+    query.exec();
+    respuesta["resultados"]=query.size();
+    while(query.next())
+    {
+        JSON entradaUsuario;
+        entradaUsuario["numid"]=query.value("numid").toString().toStdString();
+        entradaUsuario["nombre"]=query.value("nombre").toString().toStdString();
+        entradaUsuario["apellidos"]=query.value("apellidos").toString().toStdString();
+        entradaUsuario["admin"]=query.value("admin").toString().toStdString();
+        respuesta["lista"].push_back(entradaUsuario);
+    }
+    return respuesta;
 
 }

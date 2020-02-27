@@ -60,6 +60,17 @@ JSON Server::registro(JSON receivedObject)
 
 
       }
+JSON Server::lista(JSON receivedObject)
+{
+    JSON respuesta;
+
+    respuesta["idServidor"]=dameIdMensaje();
+    respuesta["idCliente"]=receivedObject["id"];
+    respuesta["hayError"]=false;
+
+    respuesta= Usuarios::listar(respuesta);
+    return respuesta;
+ }
 JSON Server::admin(JSON receivedObject)
 {
     JSON respuesta;
@@ -127,6 +138,10 @@ int Server::iniciarServer(){
                                     std::cout << "Message Sent: " <<respuesta<< std::endl;
                                 }else if (receivedObject["tipo"]=="admin") {
                                     auto respuesta=Server::admin(receivedObject).dump();
+                                    webSocket->send(respuesta);
+                                    std::cout << "Message Sent: " <<respuesta<< std::endl;
+                                }else if (receivedObject["tipo"]=="lista") {
+                                    auto respuesta=Server::lista(receivedObject).dump();
                                     webSocket->send(respuesta);
                                     std::cout << "Message Sent: " <<respuesta<< std::endl;
                                 }

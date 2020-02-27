@@ -3,7 +3,7 @@
 #include <QString>
 #include "json.hpp"
 
-using json= nlohmann::json;
+using JSON= nlohmann::json;
 
 class Usuarios
 {
@@ -15,6 +15,7 @@ public:
     static void modificarUsuario(int id,QString nombre,QString apellidos,int admin);
     static bool esAdmin(int id);
     static bool existe(int id);
+    static JSON listar(JSON respuesta);
     //json toJSON();
 private:
     int m_usuarioId;
