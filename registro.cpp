@@ -60,3 +60,37 @@ JSON Registro::listar(JSON respuesta){
     return respuesta;
 
 }
+JSON Registro::listar(JSON respuesta, int userid){
+    QSqlQuery query;
+    query.prepare("SELECT id,entrada,salida FROM public.registro, public.usuarios where usuarioid=numid and numid=:numid order by id desc");
+    query.bindValue(":numid", userid);
+    query.exec();
+    respuesta["resultados"]=query.size();
+    while(query.next())
+    {
+        JSON entradaRegistro;
+        entradaRegistro["id"]=query.value("id").toString().toStdString();
+        entradaRegistro["entrada"]=query.value("entrada").toString().toStdString();
+        entradaRegistro["salida"]=query.value("salida").toString().toStdString();
+        respuesta["lista"].push_back(entradaRegistro);
+    }
+    return respuesta;
+
+}
+JSON Registro::listardentro(JSON respuesta){
+    QSqlQuery query;
+    query.prepare("SELECT distinct(usuarioid),nombre,apellidos,entrada from registro, usuarios where usuarioid = numid and salida is null order by entrada desc");
+    query.exec();
+    respuesta["resultados"]=query.size();
+    while(query.next())
+    {
+        JSON entradaRegistro;
+        entradaRegistro["usuarioid"]=query.value("usuarioid").toString().toStdString();
+        entradaRegistro["nombre"]=query.value("nombre").toString().toStdString();
+        entradaRegistro["apellidos"]=query.value("apellidos").toString().toStdString();
+        entradaRegistro["entrada"]=query.value("entrada").toString().toStdString();
+        respuesta["lista"].push_back(entradaRegistro);
+    }
+    return respuesta;
+
+}

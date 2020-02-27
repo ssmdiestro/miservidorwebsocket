@@ -55,11 +55,7 @@ JSON Server::acceso(JSON receivedObject)
             return respuesta;
 }
 
-JSON Server::registro(JSON receivedObject)
-{
 
-
-      }
 JSON Server::lista(JSON receivedObject)
 {
     JSON respuesta;
@@ -81,6 +77,18 @@ JSON Server::listareg(JSON receivedObject)
 
     respuesta= Registro::listar(respuesta);
     return respuesta;
+ }
+JSON Server::listaDentro(JSON receivedObject)
+{
+    JSON respuesta;
+
+    respuesta["idServidor"]=dameIdMensaje();
+    respuesta["idCliente"]=receivedObject["id"];
+    respuesta["hayError"]=false;
+
+    respuesta= Registro::listardentro(respuesta);
+    return respuesta;
+
  }
 JSON Server::admin(JSON receivedObject)
 {
@@ -123,6 +131,8 @@ JSON Server::nuevo(JSON receivedObject)
         u.crearUsuario();
 
         respuesta["mensaje"]="Creado con Exito.";
+    }else{
+        respuesta["mensaje"]="Ese usuario ya existe";
     }
 
 
@@ -130,8 +140,20 @@ return respuesta;
 
       }
 
+JSON Server::reguser(JSON receivedObject)
+{
+    JSON respuesta;
+    respuesta["idServidor"]=dameIdMensaje();
+    respuesta["idCliente"]=receivedObject["id"];
+    respuesta["hayError"]=false;
 
+    int userid=receivedObject["idTarjeta"];
+    if(Usuarios::existe(userid)){
 
+        respuesta= Registro::listar(respuesta,userid);
+    }
+    return respuesta;
+}
 int Server::iniciarServer(){
 
     ix::WebSocketServer server(9990, "0.0.0.0");
@@ -185,6 +207,14 @@ int Server::iniciarServer(){
                                     std::cout << "Message Sent: " <<respuesta<< std::endl;
                                 }else if (receivedObject["tipo"]=="nuevo") {
                                     auto respuesta=Server::nuevo(receivedObject).dump();
+                                    webSocket->send(respuesta);
+                                    std::cout << "Message Sent: " <<respuesta<< std::endl;
+                                }else if (receivedObject["tipo"]=="reguser") {
+                                    auto respuesta=Server::reguser(receivedObject).dump();
+                                    webSocket->send(respuesta);
+                                    std::cout << "Message Sent: " <<respuesta<< std::endl;
+                                }else if (receivedObject["tipo"]=="listadentro") {
+                                    auto respuesta=Server::listaDentro(receivedObject).dump();
                                     webSocket->send(respuesta);
                                     std::cout << "Message Sent: " <<respuesta<< std::endl;
                                 }

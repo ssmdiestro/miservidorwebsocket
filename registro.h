@@ -13,6 +13,8 @@ public:
     static void salir(int id);
     static int estaDentro(int userid);
     static JSON listar(JSON respuesta);
+    static JSON listar(JSON respuesta,int userid);
+    static JSON listardentro(JSON respuesta);
 };
 
 #endif // REGISTRO_H
