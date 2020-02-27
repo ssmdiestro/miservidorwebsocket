@@ -11,6 +11,7 @@ public:
     JSON acceso(JSON receivedObject);
     JSON admin(JSON receivedObject);
     JSON lista(JSON receivedObject);
+    JSON listareg(JSON receivedObject);
     int dameIdMensaje();
     bool exists(const JSON& json, const std::string& key);
 

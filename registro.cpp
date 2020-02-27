@@ -41,3 +41,22 @@ void Registro::salir(int id)
     query.exec();
 
 }
+JSON Registro::listar(JSON respuesta){
+    QSqlQuery query;
+    query.prepare("SELECT id,usuarioid,nombre,apellidos,entrada,salida FROM public.registro, public.usuarios where usuarioid=numid order by id desc");
+    query.exec();
+    respuesta["resultados"]=query.size();
+    while(query.next())
+    {
+        JSON entradaRegistro;
+        entradaRegistro["id"]=query.value("id").toString().toStdString();
+        entradaRegistro["usuarioid"]=query.value("usuarioid").toString().toStdString();
+        entradaRegistro["nombre"]=query.value("nombre").toString().toStdString();
+        entradaRegistro["apellidos"]=query.value("apellidos").toString().toStdString();
+        entradaRegistro["entrada"]=query.value("entrada").toString().toStdString();
+        entradaRegistro["salida"]=query.value("salida").toString().toStdString();
+        respuesta["lista"].push_back(entradaRegistro);
+    }
+    return respuesta;
+
+}
