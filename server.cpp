@@ -105,6 +105,30 @@ JSON Server::admin(JSON receivedObject)
 return respuesta;
 
       }
+JSON Server::nuevo(JSON receivedObject)
+{
+    JSON respuesta;
+    respuesta["idServidor"]=dameIdMensaje();
+    respuesta["idCliente"]=receivedObject["id"];
+    respuesta["hayError"]=false;
+
+    int userid=receivedObject["idTarjeta"];
+    if(!Usuarios::existe(userid)){
+         std::string nom=receivedObject["nombre"];
+         QString nombre=QString::fromUtf8(nom.c_str());
+         std::string ape=receivedObject["apellidos"];
+         QString apellidos=QString::fromUtf8(ape.c_str());
+        int admin=receivedObject["admin"];
+        Usuarios u(userid,nombre,apellidos,admin);
+        u.crearUsuario();
+
+        respuesta["mensaje"]="Creado con Exito.";
+    }
+
+
+return respuesta;
+
+      }
 
 
 
@@ -157,6 +181,10 @@ int Server::iniciarServer(){
                                     std::cout << "Message Sent: " <<respuesta<< std::endl;
                                 }else if (receivedObject["tipo"]=="listareg") {
                                     auto respuesta=Server::listareg(receivedObject).dump();
+                                    webSocket->send(respuesta);
+                                    std::cout << "Message Sent: " <<respuesta<< std::endl;
+                                }else if (receivedObject["tipo"]=="nuevo") {
+                                    auto respuesta=Server::nuevo(receivedObject).dump();
                                     webSocket->send(respuesta);
                                     std::cout << "Message Sent: " <<respuesta<< std::endl;
                                 }
