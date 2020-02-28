@@ -172,10 +172,10 @@ JSON Server::reguser(JSON receivedObject)
 int Server::iniciarServer(){
 
     ix::WebSocketServer server(9990, "0.0.0.0");
-    /*ix::SocketTLSOptions tlsOptions;
+   /*ix::SocketTLSOptions tlsOptions;
     tlsOptions.tls=true;
-    tlsOptions.certFile ="./localhost.crt";
-            tlsOptions.keyFile="./localhost.key";
+    tlsOptions.certFile ="/home/usuario/Escritorio/localhost.crt";
+            tlsOptions.keyFile="/home/usuario/Escritorio/localhost.key";
             tlsOptions.caFile="NONE";
             if(tlsOptions.isValid())
             {
