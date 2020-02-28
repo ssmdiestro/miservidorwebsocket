@@ -18,7 +18,22 @@ Usuarios::Usuarios(int usuarioId,QString nombre,QString apellidos,int admin)
     this->m_admin =admin;
 
 }
+JSON Usuarios::cargar(int id){
+    QSqlQuery query;
+    query.prepare("select * from usuarios where numid=:numid");
+    query.bindValue(":numid", id);
+    query.exec();
+    query.next();
+        JSON entradaUsuario;
+        entradaUsuario["numid"]=query.value("numid").toString().toStdString();
+        entradaUsuario["nombre"]=query.value("nombre").toString().toStdString();
+        entradaUsuario["apellidos"]=query.value("apellidos").toString().toStdString();
+        entradaUsuario["admin"]=query.value("admin").toString().toStdString();
+        return entradaUsuario;
 
+
+
+}
 void Usuarios::crearUsuario()
 {
     QSqlQuery query;

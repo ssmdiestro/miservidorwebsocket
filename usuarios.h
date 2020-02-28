@@ -16,6 +16,7 @@ public:
     static bool esAdmin(int id);
     static bool existe(int id);
     static JSON listar(JSON respuesta);
+     static JSON cargar(int id);
     //json toJSON();
 private:
     int m_usuarioId;

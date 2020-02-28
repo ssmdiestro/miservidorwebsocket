@@ -36,22 +36,23 @@ JSON Server::acceso(JSON receivedObject)
     respuesta["idServidor"]=dameIdMensaje();
     respuesta["idCliente"]=receivedObject["id"];
     respuesta["hayError"]=false;
-
-
             int userid=receivedObject["idTarjeta"];
             if(Usuarios::existe(userid)){
+                JSON res=Usuarios::cargar(userid);
+                 std::string nombre =  res["nombre"];
                 int regid=Registro::estaDentro(userid);
                  if (regid!=0){
                          Registro::salir(regid);
-                         respuesta["mensaje"]="Hasta otra";
+                         respuesta["mensaje"]="Hasta otra "+nombre;
                  }else{
                      Registro::entrar(userid);
-                     respuesta["mensaje"]="Bienvenido";
+                     respuesta["mensaje"]="Bienvenido "+nombre;;
                  };
             }else{
                 respuesta["mensaje"]="Tarjeta no valida";
+                respuesta["hayError"]=true;
             };
-
+            respuesta["tipoRespuesta"]="notificacion";
             return respuesta;
 }
 
@@ -63,8 +64,10 @@ JSON Server::lista(JSON receivedObject)
     respuesta["idServidor"]=dameIdMensaje();
     respuesta["idCliente"]=receivedObject["id"];
     respuesta["hayError"]=false;
-
+    respuesta["tipoRespuesta"]="lista";
+    respuesta["tipoLista"]="todosUsuarios";
     respuesta= Usuarios::listar(respuesta);
+
     return respuesta;
  }
 JSON Server::listareg(JSON receivedObject)
@@ -74,7 +77,8 @@ JSON Server::listareg(JSON receivedObject)
     respuesta["idServidor"]=dameIdMensaje();
     respuesta["idCliente"]=receivedObject["id"];
     respuesta["hayError"]=false;
-
+    respuesta["tipoRespuesta"]="lista";
+    respuesta["tipoLista"]="todosRegistros";
     respuesta= Registro::listar(respuesta);
     return respuesta;
  }
@@ -101,12 +105,20 @@ JSON Server::admin(JSON receivedObject)
             int userid=receivedObject["idTarjeta"];
             if(Usuarios::existe(userid)){
                 if(Usuarios::esAdmin(userid)){
+                    respuesta["tipoRespuesta"]="admin";
                     respuesta["mensaje"]="Modo admin";
+                    respuesta["administrar"]=true;
                 }else{
+                    respuesta["tipoRespuesta"]="notificacion";
                     respuesta["mensaje"]="No tienes acceso al modo administrador";
+                     respuesta["administrar"]=false;
+                     respuesta["hayError"]=true;
+
                 }
             }else{
+                respuesta["tipoRespuesta"]="notificacion";
                 respuesta["mensaje"]="Tarjeta no valida";
+                respuesta["hayError"]=true;
 
             }
 
@@ -119,7 +131,7 @@ JSON Server::nuevo(JSON receivedObject)
     respuesta["idServidor"]=dameIdMensaje();
     respuesta["idCliente"]=receivedObject["id"];
     respuesta["hayError"]=false;
-
+    respuesta["creado"]=false;
     int userid=receivedObject["idTarjeta"];
     if(!Usuarios::existe(userid)){
          std::string nom=receivedObject["nombre"];
@@ -129,9 +141,12 @@ JSON Server::nuevo(JSON receivedObject)
         int admin=receivedObject["admin"];
         Usuarios u(userid,nombre,apellidos,admin);
         u.crearUsuario();
-
+        respuesta["tipoRespuesta"]="notificacion";
         respuesta["mensaje"]="Creado con Exito.";
+        respuesta["creado"]=true;
     }else{
+        respuesta["tipoRespuesta"]="notificacion";
+        respuesta["hayError"]=true;
         respuesta["mensaje"]="Ese usuario ya existe";
     }
 
@@ -157,6 +172,17 @@ JSON Server::reguser(JSON receivedObject)
 int Server::iniciarServer(){
 
     ix::WebSocketServer server(9990, "0.0.0.0");
+    /*ix::SocketTLSOptions tlsOptions;
+    tlsOptions.tls=true;
+    tlsOptions.certFile ="./localhost.crt";
+            tlsOptions.keyFile="./localhost.key";
+            tlsOptions.caFile="NONE";
+            if(tlsOptions.isValid())
+            {
+                std::cerr <<"SSL VALID" << std::endl;
+            }
+            server.setTLSOptions(tlsOptions);*/
+
     server.setOnConnectionCallback(
         [&server,this](std::shared_ptr<ix::WebSocket> webSocket,
                   std::shared_ptr<ix::ConnectionState> connectionState)
