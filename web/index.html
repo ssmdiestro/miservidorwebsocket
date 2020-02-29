@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8"> 
+        <!-- Importamos los archivos JS y CSS-->
+        <script type="text/javascript" src="/jquery.min.js"></script> <!--JQuery-->
+        <script type="text/javascript" src="funciones.js"></script>
+        <script type="text/javascript" src="/websocket.js"></script>
+        <link type="text/css" href="style.css" rel="stylesheet">
+    </head>
+    <!-- Cargamos la funcion principal al abrir la pagina-->
+    <body onload="init()">
+        <div id ="cuerpo">
+            <!-- Contenedor del panel numerico-->
+            <div id="numerico">
+                <table class="panel">
+                    <tr>
+                        <td colspan="2"><span id="numero"></span></td>
+                        <td><button id="borrar">&lt;</button></td>
+                    </tr>
+                    <tr>
+                            <td><button id="uno">1</button></td>
+                        <td><button id="dos">2</button></td>
+                        <td><button id="tres">3</button></td>
+                    <tr>
+                        <td><button id="cuatro">4</button></td>
+                        <td><button id="cinco">5</button></td>
+                        <td><button id="seis">6</button></td>
+                    </tr>
+                    <tr>
+                        <td><button id="siete">7</button></td>
+                        <td><button id="ocho">8</button></td>
+                        <td><button id="nueve">9</button></td>
+                    </tr>
+                    <tr>
+                        <td><button id="admin">#</button></td>
+                        <td><button id="cero">0</button></td>
+                        <td><button id="ok">Ok</button></td>
+                    </tr>
+                </table>
+            </div>
+            <!-- Notificacion emergente-->
+            <div id="statusdiv" style="display:none">
+                <h2 id="status" ></h2>
+            </div>
+            <!-- Menu Administrador-->
+            <div id="admindiv" style="display:none">
+                <button id="anadir" class="opcion">Nuevo usuario</button>
+                <button id="listarUsuarios" class="opcion">Lista usuarios</button>
+                <button id="listarDentro"  class="opcion">Ver usuarios dentro</button>
+                <button id="listarRegistros" class="opcion">Ver registros</button>
+                <button id="datosUsuario" class="opcion">Datos Usuario</button><br>
+                <button id="atras" class="opcion">Atras</button>
+            </div>
+            <!-- Menu añadir usuario-->
+            <div id="anadirdiv" style="display:none">
+                Numero Tarjeta: <input id="numnuevo" type="text"><br>
+                Nombre: <input id="nombre" type="text"><br>
+                Apellidos: <input id="apellidos" type="text"><br>
+                Admin: <input type="checkbox" id="chkbox_admin"><br>
+                <button onclick="adminback()" class="opcion">Volver</button>
+                <button id="nuevo" class="opcion">Añadir Usuario</button>
+            </div> 
+            <!-- Lista de usuarios-->
+            <div id="listauserdiv" style="display:none">
+                <table id="TablaListaUsuarios">
+                
+                </table>
+                <button onclick="adminback()" class="opcion">Volver</button>
+            </div> 
+            <!-- Lista de registros-->
+            <div id="listaregdiv" style="display:none">
+                <table id="TablaListaRegistros">
+                
+                </table>
+                <button onclick="adminback()" class="opcion">Volver</button>
+            </div> 
+            <!-- Lista de usuarios dentro-->
+            <div id="listadentrodiv" style="display:none">
+                <table id="TablaListaDentro">
+                
+                </table>
+                <button onclick="adminback()" class="opcion">Volver</button>
+            </div> 
+            <!-- Menu Administracion Usuario-->
+            <div id="datosusuariodiv" style="display:none">
+                Numero Tarjeta: <input id="datosId" type="text">
+                <button id="buscar" class="opcion">Buscar</button><br>
+                <table id="TablaRegistroUser">
+                
+                </table>
+                <button onclick="adminback()" class="opcion">Volver</button>
+            </div> 
+        </div>
+    </body>
+</html>

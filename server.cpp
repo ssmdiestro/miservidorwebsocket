@@ -46,7 +46,7 @@ JSON Server::acceso(JSON receivedObject)
                          respuesta["mensaje"]="Hasta otra "+nombre;
                  }else{
                      Registro::entrar(userid);
-                     respuesta["mensaje"]="Bienvenido "+nombre;;
+                     respuesta["mensaje"]="Bienvenido/a "+nombre;;
                  };
             }else{
                 respuesta["mensaje"]="Tarjeta no valida";
@@ -89,6 +89,8 @@ JSON Server::listaDentro(JSON receivedObject)
     respuesta["idServidor"]=dameIdMensaje();
     respuesta["idCliente"]=receivedObject["id"];
     respuesta["hayError"]=false;
+    respuesta["tipoRespuesta"]="lista";
+    respuesta["tipoLista"]="usuariosDentro";
 
     respuesta= Registro::listardentro(respuesta);
     return respuesta;
@@ -161,11 +163,15 @@ JSON Server::reguser(JSON receivedObject)
     respuesta["idServidor"]=dameIdMensaje();
     respuesta["idCliente"]=receivedObject["id"];
     respuesta["hayError"]=false;
-
     int userid=receivedObject["idTarjeta"];
     if(Usuarios::existe(userid)){
-
+        respuesta["tipoRespuesta"]="lista";
+        respuesta["tipoLista"]="userIdLista";
         respuesta= Registro::listar(respuesta,userid);
+    }else{
+        respuesta["tipoRespuesta"]="notificacion";
+        respuesta["mensaje"]="Usuario no existente";
+        respuesta["hayError"]=true;
     }
     return respuesta;
 }
