@@ -17,9 +17,10 @@
 
 int main(int argc, char *argv[])
 {
+    //Soporte de idioma
     QCoreApplication app(argc,argv);
     QTranslator traductor;
-    if (traductor.load("traductor_en_US","/home/usuario/Escritorio/webskt/miservidorwebsocket/"))
+    if (traductor.load("traductor_en_US","./"))
     {
         //QLocale::system().name()
         app.installTranslator(&traductor);
@@ -37,10 +38,10 @@ int main(int argc, char *argv[])
     if(!ok)
     {
         qDebug()<< QObject::tr("Error al iniciar la base de datos");
-        std::cout << "error" << std::endl;
+        qDebug()<< QObject::tr("Error");
         qDebug()<< db.lastError().text();
     }else{
-        qDebug() << QObject::tr("Biien");
+        qDebug() << QObject::tr("Base de datos iniciada correctamente");
     }
     Server servidor;
     //Inicializacion del servidor

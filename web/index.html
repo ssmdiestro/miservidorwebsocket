@@ -63,21 +63,21 @@
             </div> 
             <!-- Lista de usuarios-->
             <div id="listauserdiv" style="display:none">
-                <table id="TablaListaUsuarios">
+                <table id="TablaListaUsuarios" class="list">
                 
                 </table>
                 <button onclick="adminback()" class="opcion">Volver</button>
             </div> 
             <!-- Lista de registros-->
             <div id="listaregdiv" style="display:none">
-                <table id="TablaListaRegistros">
+                <table id="TablaListaRegistros" class="list">
                 
                 </table>
                 <button onclick="adminback()" class="opcion">Volver</button>
             </div> 
             <!-- Lista de usuarios dentro-->
             <div id="listadentrodiv" style="display:none">
-                <table id="TablaListaDentro">
+                <table id="TablaListaDentro" class="list">
                 
                 </table>
                 <button onclick="adminback()" class="opcion">Volver</button>
@@ -86,11 +86,24 @@
             <div id="datosusuariodiv" style="display:none">
                 Numero Tarjeta: <input id="datosId" type="text">
                 <button id="buscar" class="opcion">Buscar</button><br>
-                <table id="TablaRegistroUser">
+                <table id="TablaRegistroUser" class="list">
                 
                 </table>
                 <button onclick="adminback()" class="opcion">Volver</button>
             </div> 
         </div>
+        <script>
+             //Boton volver al menu de Administracion
+            function adminback()
+            {
+                document.getElementById("admindiv").style.display="block";
+                document.getElementById("anadirdiv").style.display="none";
+                document.getElementById("listauserdiv").style.display="none";
+                document.getElementById("listaregdiv").style.display="none";
+                document.getElementById("listadentrodiv").style.display="none";
+                document.getElementById("datosusuariodiv").style.display="none";
+                document.getElementById("TablaRegistroUser").innerHTML="";
+            }
+        </script>
     </body>
 </html>

@@ -18,6 +18,7 @@ Usuarios::Usuarios(int usuarioId,QString nombre,QString apellidos,int admin)
     this->m_admin =admin;
 
 }
+//Devuelve los datos de un usuario en concreto mediante su ID
 JSON Usuarios::cargar(int id){
     QSqlQuery query;
     query.prepare("select * from usuarios where numid=:numid");
@@ -30,10 +31,8 @@ JSON Usuarios::cargar(int id){
         entradaUsuario["apellidos"]=query.value("apellidos").toString().toStdString();
         entradaUsuario["admin"]=query.value("admin").toString().toStdString();
         return entradaUsuario;
-
-
-
 }
+//Metodo para añadir un nuevo Usuario en la base de datos
 void Usuarios::crearUsuario()
 {
     QSqlQuery query;
@@ -45,7 +44,7 @@ void Usuarios::crearUsuario()
     query.exec();
 
 }
-
+//Metodo para eliminar un Usuario de la base de datos
 void Usuarios::eliminarUsuario(int id)
 {
     QSqlQuery query;
@@ -53,8 +52,7 @@ void Usuarios::eliminarUsuario(int id)
     query.bindValue(":numid", id);
     query.exec();
 }
-
-
+//Metodo para modificar un Usuario
 void Usuarios::modificarUsuario(int id,QString nombre,QString apellidos,int admin)
 {
     QSqlQuery query;
@@ -66,6 +64,7 @@ void Usuarios::modificarUsuario(int id,QString nombre,QString apellidos,int admi
     query.exec();
 
 }
+//Metodo que comprueba si la ID corresponde a algun Usuario de la base de datos
 bool Usuarios::existe(int id)
 {
     bool result =false;
@@ -78,6 +77,7 @@ bool Usuarios::existe(int id)
     }
     return result;
 }
+//Metodo que comprueba si el Usuario especificado tiene permisos de administracion
 bool Usuarios::esAdmin(int id)
 {
     QSqlQuery query;
@@ -91,8 +91,8 @@ bool Usuarios::esAdmin(int id)
     }else{
         return false;
     }
-
 }
+//Devuelve una lista de todos los Usuarios
 JSON Usuarios::listar(JSON respuesta){
     QSqlQuery query;
     query.prepare("select * from usuarios");
@@ -108,5 +108,4 @@ JSON Usuarios::listar(JSON respuesta){
         respuesta["lista"].push_back(entradaUsuario);
     }
     return respuesta;
-
 }

@@ -14,7 +14,7 @@ public:
     JSON listareg(JSON receivedObject);
     JSON nuevo(JSON receivedObject);
     JSON reguser(JSON receivedObject);
-     JSON listaDentro(JSON receivedObject);
+    JSON listaDentro(JSON receivedObject);
     int dameIdMensaje();
     bool exists(const JSON& json, const std::string& key);
 

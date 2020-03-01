@@ -19,6 +19,7 @@ Server::Server()
 static int g_idMensaje=0;
 using JSON = nlohmann::json;
 
+//Se genera un ID de conexion que relaciona al cliente con el servidor
 int Server::dameIdMensaje(){
     g_idMensaje++;
     return g_idMensaje;
@@ -28,35 +29,38 @@ bool Server::exists(const JSON& json, const std::string& key)
 {
     return json.find(key)!=json.end();
 }
-
+//Mensaje JSON que solicita añadir un nuevo registro cuando un usuario entra con su clave
+//o añadirle hora de salida si el Usuario ya estaba dentro
 JSON Server::acceso(JSON receivedObject)
 {
     JSON respuesta;
-
     respuesta["idServidor"]=dameIdMensaje();
     respuesta["idCliente"]=receivedObject["id"];
     respuesta["hayError"]=false;
-            int userid=receivedObject["idTarjeta"];
-            if(Usuarios::existe(userid)){
-                JSON res=Usuarios::cargar(userid);
-                 std::string nombre =  res["nombre"];
-                int regid=Registro::estaDentro(userid);
-                 if (regid!=0){
-                         Registro::salir(regid);
-                         respuesta["mensaje"]="Hasta otra "+nombre;
-                 }else{
-                     Registro::entrar(userid);
-                     respuesta["mensaje"]="Bienvenido/a "+nombre;;
-                 };
-            }else{
-                respuesta["mensaje"]="Tarjeta no valida";
-                respuesta["hayError"]=true;
-            };
-            respuesta["tipoRespuesta"]="notificacion";
-            return respuesta;
+    int userid=receivedObject["idTarjeta"];
+    if(Usuarios::existe(userid))
+    {
+        JSON res=Usuarios::cargar(userid);
+        std::string nombre =  res["nombre"];
+        int regid=Registro::estaDentro(userid);
+         if (regid!=0)
+         {
+             Registro::salir(regid);
+             respuesta["mensaje"]="Hasta otra "+nombre;
+         }else
+         {
+             Registro::entrar(userid);
+             respuesta["mensaje"]="Bienvenido/a "+nombre;;
+         };
+    }else
+    { //Si el numero de Id no corresponde con un Usuario devuelve un error
+        respuesta["mensaje"]="Tarjeta no valida";
+        respuesta["hayError"]=true;
+    };
+    respuesta["tipoRespuesta"]="notificacion";
+    return respuesta;
 }
-
-
+//Mensaje JSON que solicita listar todos los usuarios
 JSON Server::lista(JSON receivedObject)
 {
     JSON respuesta;
@@ -70,6 +74,7 @@ JSON Server::lista(JSON receivedObject)
 
     return respuesta;
  }
+//Mensaje JSON que solicita listar todos los registros
 JSON Server::listareg(JSON receivedObject)
 {
     JSON respuesta;
@@ -82,6 +87,7 @@ JSON Server::listareg(JSON receivedObject)
     respuesta= Registro::listar(respuesta);
     return respuesta;
  }
+//Mensaje JSON que solicita listar todos los usuarios que estan dentro
 JSON Server::listaDentro(JSON receivedObject)
 {
     JSON respuesta;
@@ -96,37 +102,37 @@ JSON Server::listaDentro(JSON receivedObject)
     return respuesta;
 
  }
+//Mensaje JSON que solicita entrar en el panel de administracion si el usuario tiene dichos privilegios
 JSON Server::admin(JSON receivedObject)
 {
     JSON respuesta;
     respuesta["idServidor"]=dameIdMensaje();
     respuesta["idCliente"]=receivedObject["id"];
     respuesta["hayError"]=false;
-
-
-            int userid=receivedObject["idTarjeta"];
-            if(Usuarios::existe(userid)){
-                if(Usuarios::esAdmin(userid)){
-                    respuesta["tipoRespuesta"]="admin";
-                    respuesta["mensaje"]="Modo admin";
-                    respuesta["administrar"]=true;
-                }else{
-                    respuesta["tipoRespuesta"]="notificacion";
-                    respuesta["mensaje"]="No tienes acceso al modo administrador";
-                     respuesta["administrar"]=false;
-                     respuesta["hayError"]=true;
-
-                }
-            }else{
-                respuesta["tipoRespuesta"]="notificacion";
-                respuesta["mensaje"]="Tarjeta no valida";
-                respuesta["hayError"]=true;
-
-            }
-
-return respuesta;
-
-      }
+    int userid=receivedObject["idTarjeta"];
+    if(Usuarios::existe(userid))
+    {
+        if(Usuarios::esAdmin(userid))
+        {
+            respuesta["tipoRespuesta"]="admin";
+            respuesta["mensaje"]="Modo admin";
+            respuesta["administrar"]=true;
+        }else
+        {
+            respuesta["tipoRespuesta"]="notificacion";
+            respuesta["mensaje"]="No tienes acceso al modo administrador";
+             respuesta["administrar"]=false;
+             respuesta["hayError"]=true;
+        }
+    }else
+    {
+        respuesta["tipoRespuesta"]="notificacion";
+        respuesta["mensaje"]="Tarjeta no valida";
+        respuesta["hayError"]=true;
+    }
+    return respuesta;
+}
+//Mensaje JSON que solicita añadir un nuevo Usuario a la base de datos
 JSON Server::nuevo(JSON receivedObject)
 {
     JSON respuesta;
@@ -135,7 +141,8 @@ JSON Server::nuevo(JSON receivedObject)
     respuesta["hayError"]=false;
     respuesta["creado"]=false;
     int userid=receivedObject["idTarjeta"];
-    if(!Usuarios::existe(userid)){
+    if(!Usuarios::existe(userid))//Comprueba previamente si ese numero de Id ya existe
+    {
          std::string nom=receivedObject["nombre"];
          QString nombre=QString::fromUtf8(nom.c_str());
          std::string ape=receivedObject["apellidos"];
@@ -146,17 +153,15 @@ JSON Server::nuevo(JSON receivedObject)
         respuesta["tipoRespuesta"]="notificacion";
         respuesta["mensaje"]="Creado con Exito.";
         respuesta["creado"]=true;
-    }else{
+    }else
+    {
         respuesta["tipoRespuesta"]="notificacion";
         respuesta["hayError"]=true;
         respuesta["mensaje"]="Ese usuario ya existe";
-    }
-
-
-return respuesta;
-
-      }
-
+    }   
+    return respuesta;
+}
+//Mensaje JSON que solicita listar todos los registros de un usuario en concreto mediante su ID
 JSON Server::reguser(JSON receivedObject)
 {
     JSON respuesta;
@@ -164,20 +169,27 @@ JSON Server::reguser(JSON receivedObject)
     respuesta["idCliente"]=receivedObject["id"];
     respuesta["hayError"]=false;
     int userid=receivedObject["idTarjeta"];
-    if(Usuarios::existe(userid)){
+    if(Usuarios::existe(userid))//Comprueba previamente si ese numero de Id existe
+    {
+
         respuesta["tipoRespuesta"]="lista";
         respuesta["tipoLista"]="userIdLista";
         respuesta= Registro::listar(respuesta,userid);
-    }else{
+    }else
+    {
         respuesta["tipoRespuesta"]="notificacion";
         respuesta["mensaje"]="Usuario no existente";
         respuesta["hayError"]=true;
     }
     return respuesta;
 }
+//Se inicializa el servidor
 int Server::iniciarServer(){
 
     ix::WebSocketServer server(9990, "0.0.0.0");
+    //No pude hacer que esto funcionase
+    //
+    //
    /*ix::SocketTLSOptions tlsOptions;
     tlsOptions.tls=true;
     tlsOptions.certFile ="/home/usuario/Escritorio/localhost.crt";
@@ -188,94 +200,95 @@ int Server::iniciarServer(){
                 std::cerr <<"SSL VALID" << std::endl;
             }
             server.setTLSOptions(tlsOptions);*/
+    //
+    //
 
-    server.setOnConnectionCallback(
-        [&server,this](std::shared_ptr<ix::WebSocket> webSocket,
-                  std::shared_ptr<ix::ConnectionState> connectionState)
-        {
-            webSocket->setOnMessageCallback(
-                [webSocket, connectionState, &server,this](const ix::WebSocketMessagePtr msg)
-                {
-                    if (msg->type == ix::WebSocketMessageType::Open)
-                    {
-                        std::cout << "New connection" << std::endl;
-
-
-                    }
-                    else if (msg->type == ix::WebSocketMessageType::Close)
-                    {
-                        std::cout << "Bye bye connection" << std::endl;
-                    }
-                    else if (msg->type == ix::WebSocketMessageType::Message)
-                    {
-                        if (!msg->binary)
-                        {
-                            /// Text format
-                          std::cout << "Received message: " << msg->str << std::endl;
-                        }
-                        auto receivedObject =JSON::parse(msg->str);
-
-                        if(receivedObject.is_discarded())
-                        {
-                            std::cout << "Error" << std::endl;
-                        }else
-                        {
-                            if(exists(receivedObject,"tipo")){
-                                if(receivedObject["tipo"]=="acceso"){
-                                    auto respuesta=Server::acceso(receivedObject).dump();
-                                    webSocket->send(respuesta);
-                                    std::cout << "Message Sent: " <<respuesta<< std::endl;
-                                }else if (receivedObject["tipo"]=="admin") {
-                                    auto respuesta=Server::admin(receivedObject).dump();
-                                    webSocket->send(respuesta);
-                                    std::cout << "Message Sent: " <<respuesta<< std::endl;
-                                }else if (receivedObject["tipo"]=="lista") {
-                                    auto respuesta=Server::lista(receivedObject).dump();
-                                    webSocket->send(respuesta);
-                                    std::cout << "Message Sent: " <<respuesta<< std::endl;
-                                }else if (receivedObject["tipo"]=="listareg") {
-                                    auto respuesta=Server::listareg(receivedObject).dump();
-                                    webSocket->send(respuesta);
-                                    std::cout << "Message Sent: " <<respuesta<< std::endl;
-                                }else if (receivedObject["tipo"]=="nuevo") {
-                                    auto respuesta=Server::nuevo(receivedObject).dump();
-                                    webSocket->send(respuesta);
-                                    std::cout << "Message Sent: " <<respuesta<< std::endl;
-                                }else if (receivedObject["tipo"]=="reguser") {
-                                    auto respuesta=Server::reguser(receivedObject).dump();
-                                    webSocket->send(respuesta);
-                                    std::cout << "Message Sent: " <<respuesta<< std::endl;
-                                }else if (receivedObject["tipo"]=="listadentro") {
-                                    auto respuesta=Server::listaDentro(receivedObject).dump();
-                                    webSocket->send(respuesta);
-                                    std::cout << "Message Sent: " <<respuesta<< std::endl;
-                                }
-
-}
-                            }
-                        }
-
-
-
-
-
-
-
-                    }
-                );
-        }
-    );
-
-
-    auto res = server.listen();
-    if (!res.first)
+server.setOnConnectionCallback(
+    [&server,this](std::shared_ptr<ix::WebSocket> webSocket,
+    std::shared_ptr<ix::ConnectionState> connectionState)
     {
-        // Error handling
-        return 1;
-    }
+        webSocket->setOnMessageCallback(
+            [webSocket, connectionState, &server,this](const ix::WebSocketMessagePtr msg)
+            {
+                if (msg->type == ix::WebSocketMessageType::Open)
+                {
+                    qDebug() << QObject::tr("Nueva conexión establecida");
 
-    server.start();
-    server.wait();
-    server.stop();
+
+                }
+                else if (msg->type == ix::WebSocketMessageType::Close)
+                {
+                    qDebug() << QObject::tr("Conexión finalizada");
+                }
+                else if (msg->type == ix::WebSocketMessageType::Message)
+                {
+                    if (!msg->binary)
+                    {
+                      qDebug() << QObject::tr("Mensaje recibido:");
+                      std::cout << msg->str << std::endl;
+                    }
+                    auto receivedObject =JSON::parse(msg->str);
+
+                    if(receivedObject.is_discarded())
+                    {
+                        qDebug() << QObject::tr("Error:");
+                    }else
+                    {   //Comprueba si el JSON recibido tiene el campo "tipo"
+                        if(exists(receivedObject,"tipo"))
+                        {   //En caso afirmativo comprueba que tipo de respuesta para realizar una funcion u otra.
+                            qDebug() << QObject::tr("Mensaje enviado: ");
+                            if(receivedObject["tipo"]=="acceso")
+                            {
+                                auto respuesta=Server::acceso(receivedObject).dump();
+                                webSocket->send(respuesta);
+                                std::cout  <<respuesta<< std::endl;
+                            }else if (receivedObject["tipo"]=="admin")
+                            {
+                                auto respuesta=Server::admin(receivedObject).dump();
+                                webSocket->send(respuesta);
+                                std::cout  <<respuesta<< std::endl;
+                            }else if (receivedObject["tipo"]=="lista")
+                            {
+                                auto respuesta=Server::lista(receivedObject).dump();
+                                webSocket->send(respuesta);
+                                std::cout  <<respuesta<< std::endl;
+                            }else if (receivedObject["tipo"]=="listareg")
+                            {
+                                auto respuesta=Server::listareg(receivedObject).dump();
+                                webSocket->send(respuesta);
+                                std::cout <<respuesta<< std::endl;
+                            }else if (receivedObject["tipo"]=="nuevo")
+                            {
+                                auto respuesta=Server::nuevo(receivedObject).dump();
+                                webSocket->send(respuesta);
+                                std::cout  <<respuesta<< std::endl;
+                            }else if (receivedObject["tipo"]=="reguser")
+                            {
+                                auto respuesta=Server::reguser(receivedObject).dump();
+                                webSocket->send(respuesta);
+                                std::cout <<respuesta<< std::endl;
+                            }else if (receivedObject["tipo"]=="listadentro")
+                            {
+                                auto respuesta=Server::listaDentro(receivedObject).dump();
+                                webSocket->send(respuesta);
+                            }
+}
+                        }
+                    }
+                }
+            );
+    }
+);
+
+auto res = server.listen();
+if (!res.first)
+{
+    // Error handling
+    return 1;
+}
+
+server.start();
+server.wait();
+server.stop();
 
 }

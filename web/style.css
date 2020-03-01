@@ -1,6 +1,5 @@
 #statusdiv{
     padding:20px;
-
     display: inline-block;
    position:fixed;
    top:30%;
@@ -66,4 +65,9 @@ background-color:#fff;
 border-radius:25px;
 overflow-y:hidden;
 color:lightgreen;
+}
+.list{
+    border-collapse: separate;
+  border-spacing: 20px 15px;
+  text-align:left;
 }

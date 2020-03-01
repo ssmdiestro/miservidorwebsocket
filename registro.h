@@ -1,6 +1,5 @@
 #ifndef REGISTRO_H
 #define REGISTRO_H
-#include <QString>
 #include "json.hpp"
 
 using JSON= nlohmann::json;

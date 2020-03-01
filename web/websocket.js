@@ -96,27 +96,33 @@ socket.onmessage = function (event){
         //Lista Usuarios
         if (object.tipoLista=="todosUsuarios"){
             document.getElementById("TablaListaUsuarios").innerHTML="";
-            $("#TablaListaUsuarios").append('<tr><td>NumID</td>'+
-            '<td>Nombre</td>'+
-            '<td>Apellidos</td>' + 
-            '<td>Admin</td>');
+            $("#TablaListaUsuarios").append('<tr><th>NumID</th>'+
+            '<th>Nombre</th>'+
+            '<th>Apellidos</th>' + 
+            '<th>Admin</th>');
             for (i = 0; i < object.lista.length; i++){
+               
+                if (object.lista[i].admin == 1){
+                     var adminvalue = "Si";
+                }else{
+                    var adminvalue = "No";
+                }
                 $("#TablaListaUsuarios").append('<tr>' + 
                 '<td align="center">' + object.lista[i].numid + '</td>'+
                 '<td align="center">' + object.lista[i].nombre + '</td>'+
                 '<td align="center">' + object.lista[i].apellidos + '</td>'+
-                '<td align="center">' + object.lista[i].admin + '</td>'+'</tr>'
+                '<td align="center">' + adminvalue + '</td>'+'</tr>'
                 );
             }
         //Lista registros
         }else if(object.tipoLista=="todosRegistros"){
             document.getElementById("TablaListaRegistros").innerHTML="";
-            $("#TablaListaRegistros").append('<tr><td>ID</td>'+
-            '<td>Id Usuario</td>'+
-            '<td>Nombre</td>'+
-            '<td>Apellidos</td>' + 
-            '<td>entrada</td>' + 
-            '<td>salida</td>');
+            $("#TablaListaRegistros").append('<tr><th>ID</th>'+
+            '<th>Id Usuario</th>'+
+            '<th>Nombre</th>'+
+            '<th>Apellidos</th>' + 
+            '<th>Entrada</th>' + 
+            '<th>Salida</th>');
             for (i = 0; i < object.lista.length; i++){
                 $("#TablaListaRegistros").append('<tr>' + 
                 '<td align="center">' + object.lista[i].id + '</td>'+
@@ -130,10 +136,10 @@ socket.onmessage = function (event){
         //Lista Usuarios Dentro
         }else if(object.tipoLista=="usuariosDentro"){
             document.getElementById("TablaListaDentro").innerHTML="";
-            $("#TablaListaDentro").append('<tr><td>ID</td>'+
-            '<td>nombre</td>'+
-            '<td>apellidos</td>'+
-            '<td>entrada</td>');
+            $("#TablaListaDentro").append('<tr><th>ID</th>'+
+            '<th>Nombre</th>'+
+            '<th>Apellidos</th>'+
+            '<th>Entrada</th>');
             for (i = 0; i < object.lista.length; i++){
                 $("#TablaListaDentro").append('<tr>' + 
                 '<td align="center">' + object.lista[i].usuarioid + '</td>'+
@@ -145,9 +151,9 @@ socket.onmessage = function (event){
         //Lista registros de un Usuario especifico
         }else if(object.tipoLista=="userIdLista"){
             document.getElementById("TablaRegistroUser").innerHTML="";
-            $("#TablaRegistroUser").append('<tr><td>ID</td>'+
-            '<td>entrada</td>'+
-            '<td>salida</td>');
+            $("#TablaRegistroUser").append('<tr><th>ID</th>'+
+            '<th>Entrada</th>'+
+            '<th>Salida</th>');
             for (i = 0; i < object.lista.length; i++){
                 $("#TablaRegistroUser").append('<tr>' + 
                 '<td align="center">' + object.lista[i].id + '</td>'+

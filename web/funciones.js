@@ -24,6 +24,7 @@ function init(){
     var datosUsuario= document.getElementById("datosUsuario");
     var buscar= document.getElementById("buscar");
     var max= 7;
+    
     // Funcionamiento de botones numericos
     uno.onclick=function(e){
         if(numero.textContent.length<max){
@@ -176,16 +177,4 @@ function init(){
         document.getElementById("numerico").style.display="block";
         
     }
-    //Boton volver al menu de Administracion
-    function adminback()
-    {
-        document.getElementById("admindiv").style.display="block";
-        document.getElementById("anadirdiv").style.display="none";
-        document.getElementById("listauserdiv").style.display="none";
-        document.getElementById("listaregdiv").style.display="none";
-        document.getElementById("listadentrodiv").style.display="none";
-        document.getElementById("datosusuariodiv").style.display="none";
-        document.getElementById("TablaRegistroUser").innerHTML="";
-    }
-    
 }

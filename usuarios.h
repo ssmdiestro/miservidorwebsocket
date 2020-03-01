@@ -17,7 +17,6 @@ public:
     static bool existe(int id);
     static JSON listar(JSON respuesta);
      static JSON cargar(int id);
-    //json toJSON();
 private:
     int m_usuarioId;
     QString m_nombre;
