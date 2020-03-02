@@ -2,20 +2,93 @@
 #define SERVER_H
 #include "json.hpp"
 using JSON = nlohmann::json;
+/**
+ * @brief Clase Server
+ * Es la clase encargada de manejar el servidor
+ */
+
 class Server
 {
 public:
     Server();
-    int iniciarServer();
-    JSON registro(JSON receivedObject);
-    JSON acceso(JSON receivedObject);
-    JSON admin(JSON receivedObject);
-    JSON lista(JSON receivedObject);
-    JSON listareg(JSON receivedObject);
-    JSON nuevo(JSON receivedObject);
-    JSON reguser(JSON receivedObject);
-    JSON listaDentro(JSON receivedObject);
+    /**
+     * @brief dameIdMensaje
+     *
+     * Se genera un ID de conexion que relaciona al cliente con el servidor
+     * @return
+     */
     int dameIdMensaje();
+    /**
+     * @brief iniciarServer
+     *
+     * Inicia el servidor
+     * @return
+     */
+    int iniciarServer();
+    /**
+     * @brief acceso
+     *
+     * Devuelve al cliente un mensaje JSON y solicita añadir un nuevo registro cuando un usuario entra con su clave o añadirle hora de salida si el Usuario ya estaba dentro
+     * @param receivedObject El JSON que recibe desde el cliente
+     * @return
+     */
+    JSON acceso(JSON receivedObject);
+    /**
+     * @brief admin
+     *
+     * Devuelve al cliente un mensaje JSON y solicita entrar en el panel de administracion si el usuario tiene dichos privilegios
+     * @param receivedObject El JSON que recibe desde el cliente
+     * @return
+     */
+    JSON admin(JSON receivedObject);
+    /**
+     * @brief lista
+     *
+     * Devuelve al cliente un mensaje JSON con la lista de todos los usuarios
+     * @param receivedObject El JSON que recibe desde el cliente
+     * @return
+     */
+    JSON lista(JSON receivedObject);
+    /**
+     * @brief listareg
+     *
+     * Devuelve al cliente un mensaje JSON con la lista de todos los registros
+     * @param receivedObject El JSON que recibe desde el cliente
+     * @return
+     */
+    JSON listareg(JSON receivedObject);
+    /**
+     * @brief nuevo
+     *
+     * Devuelve al cliente un mensaje JSON con los datos necesarios para añadir a la base de datos un nuevo Usuario
+     * @param receivedObject El JSON que recibe desde el cliente
+     * @return
+     */
+    JSON nuevo(JSON receivedObject);
+    /**
+     * @brief reguser
+     *
+     * Devuelve al cliente un mensaje JSON con los registros de un usuario en concreto
+     * @param receivedObject El JSON que recibe desde el cliente
+     * @return
+     */
+    JSON reguser(JSON receivedObject);
+    /**
+     * @brief listaDentro
+     *
+     * Devuelve al cliente un mensaje JSON con la lista de usuarios que están dentro
+     * @param receivedObject El JSON que recibe desde el cliente
+     * @return
+     */
+    JSON listaDentro(JSON receivedObject);
+    /**
+     * @brief exists
+     *
+     * Comprueba si el JSON recibido tiene el campo especificado
+     * @param json JSON a comprobar
+     * @param key Nombre del campo a comprobar
+     * @return
+     */
     bool exists(const JSON& json, const std::string& key);
 
 };
