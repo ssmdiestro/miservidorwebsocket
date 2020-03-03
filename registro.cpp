@@ -10,20 +10,21 @@ Registro::Registro()
 {
 }
 //Metodo para registrar la entrada de un Usuario
-void Registro::entrar(int userid)
+void Registro::entrar(int userid,QSqlDatabase db)
 {
-    QSqlQuery query;
+    QSqlQuery query(db);
     query.prepare("INSERT into registro (usuarioid,entrada) VALUES (:userid,CURRENT_TIMESTAMP(0))");
     query.bindValue(":userid", userid);
     query.exec();
 
+
 }
 //Metodo que comprueba si un Usuario está dentro mediante la comprobacion del campo Salida
 //Si es el campo está vacio significa que ese Usuario aun no ha salido
-int Registro::estaDentro(int userid)
+int Registro::estaDentro(int userid,QSqlDatabase db)
 {
     int resultid =0;
-    QSqlQuery query;
+    QSqlQuery query(db);
     query.prepare("SELECT id from registro where usuarioid = :numid and salida is null order by entrada desc limit 1");
     query.bindValue(":numid", userid);
     if (query.exec()){
@@ -37,17 +38,17 @@ int Registro::estaDentro(int userid)
 
 }
 //Metodo que agrega la fecha y horas actuales al campo Salida de un registro de la Base de datos
-void Registro::salir(int id)
+void Registro::salir(int id,QSqlDatabase db)
 {
-    QSqlQuery query;
+    QSqlQuery query(db);
     query.prepare("UPDATE registro SET salida= CURRENT_TIMESTAMP(0) where id =:id");
     query.bindValue(":id", id);
     query.exec();
 
 }
 //Devuelve una lista de todos los registros
-JSON Registro::listar(JSON respuesta){
-    QSqlQuery query;
+JSON Registro::listar(JSON respuesta,QSqlDatabase db){
+    QSqlQuery query(db);
     query.prepare("SELECT id,usuarioid,nombre,apellidos,entrada,salida FROM public.registro, public.usuarios where usuarioid=numid order by id desc");
     query.exec();
     respuesta["resultados"]=query.size();
@@ -66,8 +67,8 @@ JSON Registro::listar(JSON respuesta){
 
 }
 //Devuelve una lista de registros de un Usuario concreto mediante su ID
-JSON Registro::listar(JSON respuesta, int userid){
-    QSqlQuery query;
+JSON Registro::listar(JSON respuesta, int userid,QSqlDatabase db){
+    QSqlQuery query(db);
     query.prepare("SELECT id,entrada,salida FROM public.registro, public.usuarios where usuarioid=numid and numid=:numid order by id desc");
     query.bindValue(":numid", userid);
     query.exec();
@@ -84,8 +85,8 @@ JSON Registro::listar(JSON respuesta, int userid){
 
 }
 //Devuelve una lista de todos los usuarios que están dentro
-JSON Registro::listardentro(JSON respuesta){
-    QSqlQuery query;
+JSON Registro::listardentro(JSON respuesta,QSqlDatabase db){
+    QSqlQuery query(db);
     query.prepare("SELECT distinct(usuarioid),nombre,apellidos,entrada from registro, usuarios where usuarioid = numid and salida is null order by entrada desc");
     query.exec();
     respuesta["resultados"]=query.size();

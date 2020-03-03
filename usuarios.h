@@ -2,6 +2,7 @@
 #define USUARIOS_H
 #include <QString>
 #include "json.hpp"
+#include <QSqlDatabase>
 
 using JSON= nlohmann::json;
 /**
@@ -27,14 +28,14 @@ public:
      *
      * Metodo para añadir un nuevo Usuario en la base de datos
      */
-    void crearUsuario();
+    void crearUsuario(QSqlDatabase db);
     /**
      * @brief eliminarUsuario
      *
      * Metodo para eliminar un Usuario de la base de datos
      * @param id
      */
-    static void eliminarUsuario(int id);
+    static void eliminarUsuario(int id,QSqlDatabase db);
     /**
      * @brief modificarUsuario
      *
@@ -44,7 +45,7 @@ public:
      * @param apellidos
      * @param admin 0=False  1=True
      */
-    static void modificarUsuario(int id,QString nombre,QString apellidos,int admin);
+    static void modificarUsuario(int id,QString nombre,QString apellidos,int admin,QSqlDatabase db);
     /**
      * @brief esAdmin
      *
@@ -52,7 +53,7 @@ public:
      * @param id
      * @return
      */
-    static bool esAdmin(int id);
+    static bool esAdmin(int id,QSqlDatabase db);
     /**
      * @brief existe
      *
@@ -60,7 +61,7 @@ public:
      * @param id
      * @return
      */
-    static bool existe(int id);
+    static bool existe(int id, QSqlDatabase db);
     /**
      * @brief listar
      *
@@ -68,7 +69,7 @@ public:
      * @param respuesta
      * @return
      */
-    static JSON listar(JSON respuesta);
+    static JSON listar(JSON respuesta,QSqlDatabase db);
     /**
       * @brief cargar
       *
@@ -76,7 +77,7 @@ public:
       * @param id
       * @return
       */
-     static JSON cargar(int id);
+     static JSON cargar(int id,QSqlDatabase db);
 
 private:
     int m_usuarioId;

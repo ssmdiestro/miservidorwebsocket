@@ -7,7 +7,6 @@
 #include <QVariant>
 #include <QString>
 #include "json.hpp"
-
 using JSON = nlohmann::json;
 
 Usuarios::Usuarios(int usuarioId,QString nombre,QString apellidos,int admin)
@@ -19,8 +18,8 @@ Usuarios::Usuarios(int usuarioId,QString nombre,QString apellidos,int admin)
 
 }
 //Devuelve los datos de un usuario en concreto mediante su ID
-JSON Usuarios::cargar(int id){
-    QSqlQuery query;
+JSON Usuarios::cargar(int id,QSqlDatabase db){
+    QSqlQuery query(db);
     query.prepare("select * from usuarios where numid=:numid");
     query.bindValue(":numid", id);
     query.exec();
@@ -33,9 +32,9 @@ JSON Usuarios::cargar(int id){
         return entradaUsuario;
 }
 //Metodo para añadir un nuevo Usuario en la base de datos
-void Usuarios::crearUsuario()
+void Usuarios::crearUsuario(QSqlDatabase db)
 {
-    QSqlQuery query;
+    QSqlQuery query(db);
     query.prepare("INSERT into usuarios (numid,nombre,apellidos,admin) VALUES (:numid,:nombre,:apellidos,:admin)");
     query.bindValue(":numid", m_usuarioId);
     query.bindValue(":nombre", m_nombre);
@@ -45,17 +44,17 @@ void Usuarios::crearUsuario()
 
 }
 //Metodo para eliminar un Usuario de la base de datos
-void Usuarios::eliminarUsuario(int id)
+void Usuarios::eliminarUsuario(int id,QSqlDatabase db)
 {
-    QSqlQuery query;
+    QSqlQuery query(db);
     query.prepare("DELETE from usuarios where numid=:numid");
     query.bindValue(":numid", id);
     query.exec();
 }
 //Metodo para modificar un Usuario
-void Usuarios::modificarUsuario(int id,QString nombre,QString apellidos,int admin)
+void Usuarios::modificarUsuario(int id,QString nombre,QString apellidos,int admin,QSqlDatabase db)
 {
-    QSqlQuery query;
+    QSqlQuery query(db);
     query.prepare("UPDATE usuarios SET nombre = :nombre,apellidos = :apellidos,admin = :admin WHERE numid=:numid");
     query.bindValue(":numid", id);
     query.bindValue(":nombre", nombre);
@@ -65,22 +64,24 @@ void Usuarios::modificarUsuario(int id,QString nombre,QString apellidos,int admi
 
 }
 //Metodo que comprueba si la ID corresponde a algun Usuario de la base de datos
-bool Usuarios::existe(int id)
+bool Usuarios::existe(int id, QSqlDatabase db)
 {
     bool result =false;
-    QSqlQuery query;
+    QSqlQuery query(db);
     query.prepare("SELECT numid from usuarios where numid = :numid");
     query.bindValue(":numid", id);
 
     if (query.exec()){
         if (query.size()>0) result =true;
     }
+        qDebug() << query.lastError().text();
     return result;
+
 }
 //Metodo que comprueba si el Usuario especificado tiene permisos de administracion
-bool Usuarios::esAdmin(int id)
+bool Usuarios::esAdmin(int id,QSqlDatabase db)
 {
-    QSqlQuery query;
+    QSqlQuery query(db);
     query.prepare("SELECT admin from usuarios where numid = :numid");
     query.bindValue(":numid", id);
     query.exec();
@@ -93,8 +94,8 @@ bool Usuarios::esAdmin(int id)
     }
 }
 //Devuelve una lista de todos los Usuarios
-JSON Usuarios::listar(JSON respuesta){
-    QSqlQuery query;
+JSON Usuarios::listar(JSON respuesta,QSqlDatabase db){
+    QSqlQuery query(db);
     query.prepare("select * from usuarios");
     query.exec();
     respuesta["resultados"]=query.size();

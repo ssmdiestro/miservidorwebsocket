@@ -35,8 +35,7 @@ SOURCES += \
     server.cpp
 
 HEADERS += \
-        mainwindow.h \
-    ../../json/include/nlohmann/json.hpp \
+    mainwindow.h \
     usuarios.h \
     json.hpp \
     registro.h \
@@ -46,18 +45,18 @@ FORMS += \
         mainwindow.ui
 
 
-LIBS += -pthread -lz -lssl -lcrypto
+LIBS += -pthread -lz
 
 
-win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../../websockedSSL/websocketLib/lib/release/ -lixwebsocket
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../../websockedSSL/websocketLib/lib/debug/ -lixwebsocket
-else:unix: LIBS += -L$$PWD/../../../websockedSSL/websocketLib/lib/ -lixwebsocket
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/websocket/lib/release/ -lixwebsocket
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/websocket/lib/debug/ -lixwebsocket
+else:unix: LIBS += -L$$PWD/websocket/lib/ -lixwebsocket
 
-INCLUDEPATH += $$PWD/../../../websockedSSL/websocketLib/include
-DEPENDPATH += $$PWD/../../../websockedSSL/websocketLib/include
+INCLUDEPATH += $$PWD/websocket/include
+DEPENDPATH += $$PWD/websocket/include
 
-win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$PWD/../../../websockedSSL/websocketLib/lib/release/libixwebsocket.a
-else:win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$PWD/../../../websockedSSL/websocketLib/lib/debug/libixwebsocket.a
-else:win32:!win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$PWD/../../../websockedSSL/websocketLib/lib/release/ixwebsocket.lib
-else:win32:!win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$PWD/../../../websockedSSL/websocketLib/lib/debug/ixwebsocket.lib
-else:unix: PRE_TARGETDEPS += $$PWD/../../../websockedSSL/websocketLib/lib/libixwebsocket.a
+win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$PWD/websocket/lib/release/libixwebsocket.a
+else:win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$PWD/websocket/lib/debug/libixwebsocket.a
+else:win32:!win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$PWD/websocket/lib/release/ixwebsocket.lib
+else:win32:!win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$PWD/websocket/lib/debug/ixwebsocket.lib
+else:unix: PRE_TARGETDEPS += $$PWD/websocket/lib/libixwebsocket.a

@@ -1,6 +1,7 @@
 #ifndef REGISTRO_H
 #define REGISTRO_H
 #include "json.hpp"
+#include <QSqlDatabase>
 
 using JSON= nlohmann::json;
 /**
@@ -19,14 +20,14 @@ public:
      * Metodo para registrar la entrada de un Usuario
      * @param userid
      */
-    static void entrar(int userid);
+    static void entrar(int userid,QSqlDatabase db);
     /**
      * @brief salir
      *
      * Metodo que agrega la fecha y horas actuales al campo Salida de un registro de la Base de datos
      * @param id
      */
-    static void salir(int id);
+    static void salir(int id,QSqlDatabase db);
     /**
      * @brief estaDentro
      *
@@ -34,7 +35,7 @@ public:
      * @param userid
      * @return
      */
-    static int estaDentro(int userid);
+    static int estaDentro(int userid,QSqlDatabase db);
     /**
      * @brief listar
      *
@@ -42,7 +43,7 @@ public:
      * @param respuesta
      * @return
      */
-    static JSON listar(JSON respuesta);
+    static JSON listar(JSON respuesta,QSqlDatabase db);
     /**
      * @brief listar
      *
@@ -51,7 +52,7 @@ public:
      * @param userid
      * @return
      */
-    static JSON listar(JSON respuesta,int userid);
+    static JSON listar(JSON respuesta,int userid,QSqlDatabase db);
     /**
      * @brief listardentro
      *
@@ -59,7 +60,7 @@ public:
      * @param respuesta
      * @return
      */
-    static JSON listardentro(JSON respuesta);
+    static JSON listardentro(JSON respuesta,QSqlDatabase db);
 };
 
 #endif // REGISTRO_H

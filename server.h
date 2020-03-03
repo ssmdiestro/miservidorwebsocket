@@ -1,6 +1,8 @@
 #ifndef SERVER_H
 #define SERVER_H
 #include "json.hpp"
+#include <QSqlDatabase>
+#include <QString>
 using JSON = nlohmann::json;
 /**
  * @brief Clase Server
@@ -11,6 +13,17 @@ class Server
 {
 public:
     Server();
+    QSqlDatabase m_db;
+    QString m_hostname;
+    QString m_port;
+    QString m_database;
+    QString m_userName;
+    QString m_password;
+    QSqlDatabase conectar();
+    void loadProperties();
+    void readFile();
+    void processLine(std::string line);
+    std::map<std::string, std::string> prop;
     /**
      * @brief dameIdMensaje
      *

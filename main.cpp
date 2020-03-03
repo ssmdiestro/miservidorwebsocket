@@ -12,6 +12,10 @@
 #include "server.h"
 #include <QTranslator>
 #include <QCoreApplication>
+#include <QFile>
+#include <QString>
+#include <QIODevice>
+
 
 
 
@@ -25,27 +29,7 @@ int main(int argc, char *argv[])
         //QLocale::system().name()
         app.installTranslator(&traductor);
     }
-    //Conexion con la base de datos
-    QSqlDatabase db;
-    db =(QSqlDatabase::addDatabase("QPSQL"));
-    db.setHostName("localhost");
-    db.setPort(5432);
-    db.setDatabaseName("controlAccesoDB");
-    db.setUserName("postgres");
-    db.setPassword("");
-
-    bool ok =db.open();
-    if(!ok)
-    {
-        qDebug()<< QObject::tr("Error al iniciar la base de datos");
-        qDebug()<< QObject::tr("Error");
-        qDebug()<< db.lastError().text();
-    }else{
-        qDebug() << QObject::tr("Base de datos iniciada correctamente");
-    }
     Server servidor;
     //Inicializacion del servidor
     servidor.iniciarServer();
-
-
 }
