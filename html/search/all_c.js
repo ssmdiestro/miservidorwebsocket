@@ -11,6 +11,6 @@ var searchData=
   ['merge_5fand_5frenumber_3c_20make_5findex_5fsequence_3c_20n_2f2_20_3e_3a_3atype_2c_20make_5findex_5fsequence_3c_20n_20_2d_20n_2f2_20_3e_3a_3atype_20_3e',['merge_and_renumber&lt; make_index_sequence&lt; N/2 &gt;::type, make_index_sequence&lt; N - N/2 &gt;::type &gt;',['../structnlohmann_1_1detail_1_1merge__and__renumber.html',1,'nlohmann::detail']]],
   ['merge_5fpatch',['merge_patch',['../classnlohmann_1_1basic__json.html#a7c43ed2a3004c1fa9543913f37b9fca9',1,'nlohmann::basic_json']]],
   ['meta',['meta',['../classnlohmann_1_1basic__json.html#a677318a34ade7f8177a2784c06aa3671',1,'nlohmann::basic_json']]],
-  ['modificarusuario',['modificarUsuario',['../classUsuarios.html#ae17a5f58244e3796f8d05e7e87003414',1,'Usuarios']]],
+  ['modificarusuario',['modificarUsuario',['../classUsuarios.html#aa859e02b0beea171482bb3a06162eb31',1,'Usuarios']]],
   ['mul',['mul',['../structnlohmann_1_1detail_1_1dtoa__impl_1_1diyfp.html#aa5f250d12ce89c81fdb08900c6a823e8',1,'nlohmann::detail::dtoa_impl::diyfp']]]
 ];

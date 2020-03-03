@@ -54,7 +54,6 @@ void Server::readFile()
 }
 void Server::loadProperties()
 {
-
     readFile();
     m_hostname= QString::fromUtf8(prop["hostname"].c_str());
     m_database= QString::fromUtf8(prop["database"].c_str());

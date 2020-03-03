@@ -27,6 +27,7 @@ public:
      * @brief crearUsuario
      *
      * Metodo para añadir un nuevo Usuario en la base de datos
+     * @param db
      */
     void crearUsuario(QSqlDatabase db);
     /**
@@ -34,6 +35,7 @@ public:
      *
      * Metodo para eliminar un Usuario de la base de datos
      * @param id
+     * @param db
      */
     static void eliminarUsuario(int id,QSqlDatabase db);
     /**
@@ -44,6 +46,7 @@ public:
      * @param nombre
      * @param apellidos
      * @param admin 0=False  1=True
+     * @param db
      */
     static void modificarUsuario(int id,QString nombre,QString apellidos,int admin,QSqlDatabase db);
     /**
@@ -51,6 +54,7 @@ public:
      *
      * Metodo que devuelve True o False dependiendo si el usuario indicado tiene o no permisos de Administrador
      * @param id
+     * @param db
      * @return
      */
     static bool esAdmin(int id,QSqlDatabase db);
@@ -59,6 +63,7 @@ public:
      *
      * Metodo que comprueba si un Id de usuario ya existe en la base de datos
      * @param id
+     * @param db
      * @return
      */
     static bool existe(int id, QSqlDatabase db);
@@ -67,6 +72,7 @@ public:
      *
      * Devuelve una lista de todos los usuarios
      * @param respuesta
+     * @param db
      * @return
      */
     static JSON listar(JSON respuesta,QSqlDatabase db);
@@ -75,6 +81,7 @@ public:
       *
       * Carga en un JSON los datos de un usuario en concreto
       * @param id
+      * @param db
       * @return
       */
      static JSON cargar(int id,QSqlDatabase db);

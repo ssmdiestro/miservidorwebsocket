@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['salir',['salir',['../classRegistro.html#a1475ca538fa4db18b177f82d9f814db3',1,'Registro']]],
+  ['salir',['salir',['../classRegistro.html#ab084c60a8147d3b9d3409f7806691ac7',1,'Registro']]],
   ['sax_5fparse',['sax_parse',['../classnlohmann_1_1detail_1_1binary__reader.html#ab94a54d6e595c2620b07589cf4116256',1,'nlohmann::detail::binary_reader::sax_parse()'],['../classnlohmann_1_1basic__json.html#a8a3dd150c2d1f0df3502d937de0871db',1,'nlohmann::basic_json::sax_parse()']]],
   ['serializer',['serializer',['../classnlohmann_1_1detail_1_1serializer.html',1,'nlohmann::detail::serializer&lt; BasicJsonType &gt;'],['../classnlohmann_1_1detail_1_1serializer.html#ac010525281d97867ee842da37294fe83',1,'nlohmann::detail::serializer::serializer()']]],
   ['server',['Server',['../classServer.html',1,'']]],

@@ -9,5 +9,5 @@ var searchData=
   ['discarded',['discarded',['../namespacenlohmann_1_1detail.html#a1ed8fc6239da25abcaf681d30ace4985a94708897ec9db8647dfe695714c98e46',1,'nlohmann::detail']]],
   ['diyfp',['diyfp',['../structnlohmann_1_1detail_1_1dtoa__impl_1_1diyfp.html',1,'nlohmann::detail::dtoa_impl']]],
   ['dump',['dump',['../classnlohmann_1_1detail_1_1serializer.html#a95460ebd1a535a543e5a0ec52e00f48b',1,'nlohmann::detail::serializer::dump()'],['../classnlohmann_1_1basic__json.html#a50ec80b02d0f3f51130d4abb5d1cfdc5',1,'nlohmann::basic_json::dump()']]],
-  ['documentacion_20control_20de_20acceso',['Documentacion Control de acceso',['../md_README.html',1,'']]]
+  ['documentación_20control_20de_20acceso',['Documentación Control de acceso',['../md_README.html',1,'']]]
 ];
