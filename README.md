@@ -19,6 +19,12 @@ En la página principal aparece un panel numérico junto a un botón de borrar, 
 
 - Ver datos usuario
 
+Ejemplos para el acceso:
+
+Administrador -> ID: 0 (Administrador)
+
+Sam -> ID: 22 (No administrador)
+
 
 ## Estado de la aplicación
 ***********************************************************
